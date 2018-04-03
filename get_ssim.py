@@ -12,7 +12,8 @@ if fst_file[-4:] != ".jpg":
     exit()
 num = int(fst_file[-10:-4]) - 1
 if num < 0:
-    print("First image, no previous images")
+    print("1 0")
+    print("First image, no previous images", file=stderr)
     exit()
 snd_file = fst_file[:-10] + str(num).rjust(6, '0') + fst_file[-4:]
 
