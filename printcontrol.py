@@ -2,10 +2,13 @@
 
 from sys import argv
 from octoclient import OctoClient
+from api_keys import URL, API_KEY
 
 # Specify URL and API key for Octoprint
-URL = 'http://146.169.145.97/'
-API_KEY = '91B5F50805DE468799850E3BCF804CE6'
+if URL is None:
+    URL = 'YOUR OCTOPRINT IP ADDRESS'
+if API_KEY is None:
+    API_KEY = 'YOUR OCTOPRINT API KEY'
 
 # Get SCORE and current layer from get_score.py
 SCORE = float(argv[1])
@@ -14,7 +17,7 @@ LAYER = argv[2]
 # Set Score error threshold
 THRES = 1
 
-if SSIM > THRES:
+if SCORE > THRES:
     try:
         client = OctoClient(url=URL, apikey=API_KEY)
         flags = client.printer()['state']['flags']
