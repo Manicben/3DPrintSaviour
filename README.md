@@ -38,7 +38,7 @@ Other features being considered are:
 
 Many thanks to:
 
-**Dr Peter Cheung** - For giving me the opportunity to work on an awesome and useful project as part of degree.
+**Dr Peter Cheung** - For giving me the opportunity to work on an awesome and useful project as part of my university degree.
 
 **Gina Häußge** - [Octoprint](https://octoprint.org/) - The printer control software used here. An amazing project used by many 3D printer owners.
 
@@ -54,7 +54,7 @@ Many thanks to:
 
 **OpenCV team** - [OpenCV](https://opencv.org/) - One of the most important components, OpenCV allows me, with minimal computer vision knowledge, to perform complex operations on images.
 
-Adrian Rosebrock - [OpenCV on Pi](https://www.pyimagesearch.com/2017/09/04/raspbian-stretch-install-opencv-3-python-on-your-raspberry-pi/) + [Image Difference](https://www.pyimagesearch.com/2017/06/19/image-difference-with-opencv-and-python/) - This guy is THE authority on using OpenCV with Python, Raspberry Pis, etc. His tutorials are amazing, informative and very well-written. I used his guides on installing OpenCV for Python on Raspbian Stretch, as well as his Image Difference using OpenCV and Python tutorial. I went from a OpenCV n00b to somewhat understanding OpenCV to the point where I could do some image processing myself. Definitely check out his site!
+**Adrian Rosebrock** - [OpenCV on Pi](https://www.pyimagesearch.com/2017/09/04/raspbian-stretch-install-opencv-3-python-on-your-raspberry-pi/) + [Image Difference](https://www.pyimagesearch.com/2017/06/19/image-difference-with-opencv-and-python/) - This guy is THE authority on using OpenCV with Python, Raspberry Pis, etc. His tutorials are amazing, informative and very well-written. I used his guides on installing OpenCV for Python on Raspbian Stretch, as well as his Image Difference using OpenCV and Python tutorial. I went from a OpenCV n00b to somewhat understanding OpenCV to the point where I could do some image processing myself. Definitely check out his site!
 
 **Kim Salmi** - [Fall Detection](https://github.com/infr/falldetector-public/blob/master/thesis.md) - This guy is working on a CV solution for improving safety for home care patients, thus taking care of our aging population. His thesis gave me the information needed to improve 3DPS V1, by simply adding the thresholding to remove shadows. Thanks so much, this saved me so much pain and effort and I'm glad I chanced upon your thesis.
 
