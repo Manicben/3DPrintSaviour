@@ -17,13 +17,26 @@ if num < 0:
     exit()
 snd_file = fst_file[:-10] + str(num).rjust(6, '0') + fst_file[-4:]
 
-# load the two input images
+bg_file = fst_file[:-10] + '000000.jpg'
+
+# load the two input images and background image
 imageA = cv2.imread(fst_file)
 imageB = cv2.imread(snd_file)
+imageBG = cv2.imread(bg_file)
 
 # convert the images to grayscale
 grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
 grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
+grayBG = cv2.cvtColor(imageBG, cv2.COLOR_BGR2GRAY)
+
+# Remove background
+threshold = 100
+
+grayA = cv2.absdiff(grayA, grayBG)
+grayA = cv2.threshold(grayA, threshold, 255, cv2.THRESH_BINARY)[1]
+
+grayB = cv2.absdiff(grayB, grayBG)
+grayB = cv2.threshold(grayB, threshold, 255, cv2.THRESH_BINARY)[1]
 
 # compute the Structural Similarity Index (SSIM) between the two
 # images, ensuring that the difference image is returned

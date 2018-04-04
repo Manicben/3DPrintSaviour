@@ -12,7 +12,7 @@ SSIM = float(argv[1])
 LAYER = argv[2]
 
 # Set SSIM error thrshold
-THRES = 0.973
+THRES = 0.995
 
 if SSIM < THRES:
     try:
