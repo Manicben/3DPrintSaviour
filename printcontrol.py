@@ -7,14 +7,14 @@ from octoclient import OctoClient
 URL = 'http://146.169.145.97/'
 API_KEY = '91B5F50805DE468799850E3BCF804CE6'
 
-# Get SSIM and current layer from get_ssim.py
-SSIM = float(argv[1])
+# Get SCORE and current layer from get_score.py
+SCORE = float(argv[1])
 LAYER = argv[2]
 
-# Set SSIM error thrshold
-THRES = 0.995
+# Set Score error threshold
+THRES = 1
 
-if SSIM < THRES:
+if SSIM > THRES:
     try:
         client = OctoClient(url=URL, apikey=API_KEY)
         flags = client.printer()['state']['flags']
