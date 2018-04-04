@@ -8,6 +8,8 @@ Octolapse generates amazing timelapse images where, from the camera's viewpoint,
 
 ## Changelog
 ### 04/04/2018 (3DPS V1)
+* Removed (and reset) API keys and URLs. Silly me!
+* Refactored Python files to make more sense and be more usable
 * Renamed Python files to make more sense and not rely on the score method
 * Switched from using Structured Similarity Index (SSIM) to Normalised Root Mean-Squared Error (NRMSE) for the score value
 * Changed SSIM threshold to 0.995
