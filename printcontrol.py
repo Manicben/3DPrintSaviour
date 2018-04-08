@@ -15,7 +15,7 @@ SCORE = float(argv[1])
 LAYER = argv[2]
 
 # Set Score error threshold
-THRES = 1
+THRES = 1.0
 
 if SCORE > THRES:
     try:

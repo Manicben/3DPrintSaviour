@@ -7,6 +7,9 @@
 Octolapse generates amazing timelapse images where, from the camera's viewpoint, only the 3D model changes. These images are sent to another Pi (using lsyncd/rsync), where the arrival of a new image (with inotifywait) triggers the Python scripts. By comparing the previous layer image to the current layer image and through the use of OpenCV, a score in the form of a Normalised Root Mean-Squared Error (NRMSE) value is calculated, which represents how similar the two images are, with values over 1 representing a significant deviation. This value stays consistently below 1 after shadow thresholding during a simple 3D print. When the value goes above 1, the system triggers, sending a pause command to Octoprint via the REST API (using Octoclient) and printing out the layer at which it failed in the Pi's terminal.
 
 ## Changelog
+### 08/04/2018 (3DPS V1)
+* Added 
+
 ### 04/04/2018 (3DPS V1)
 * Removed (and reset) API keys and URLs. Silly me!
 * Refactored Python files to make more sense and be more usable

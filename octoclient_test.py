@@ -1,7 +1,5 @@
 from octoclient import OctoClient
-
-URL = 'http://146.169.145.97/'
-API_KEY = '91B5F50805DE468799850E3BCF804CE6'
+from api_keys import URL,API_KEY
 
 try:
     client = OctoClient(url=URL, apikey=API_KEY)

@@ -1,0 +1,26 @@
+#!/bin/bash
+# This script runs both Python scripts when a new file is created via lsyncd
+# Note that 'moved_to' is used due to the way rsync works
+
+DIR="/home/pi/FYP/test_images" #path to your image folder
+PRINTCTRL="/home/pi/FYP/printcontrol.py" #path to printcontrol.py
+GETSCORE="/home/pi/FYP/get_score.py" #path to get_score.py
+
+# Check for the -test or -t flag. If present, copy scores to logfile
+if [ "$1" == "-test" ] || [ "$1" == "-t" ]
+then
+	echo "Logging Score output to logfile in image directory"
+	
+	inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f
+	do
+		RES_DIR=${f%/*}
+		$PRINTCTRL `$GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
+	done
+else
+	inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f
+	do
+		$PRINTCTRL `$GETSCORE "$f"`
+	done
+fi
+
+
