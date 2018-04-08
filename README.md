@@ -8,7 +8,9 @@ Octolapse generates amazing timelapse images where, from the camera's viewpoint,
 
 ## Changelog
 ### 08/04/2018 (3DPS V1)
-* Added 
+* Renamed run.sh to run. Now uses BASH and can provide '-test' or '-t' to copy output from get\_scores.py to a logfile in the same directory as the images. Useful for gathering NRMSE data for complete prints and view how the values change for each layer
+* Forgot to remove old URL and API\_KEY from octoclient\_test.py, has been replaced
+* Renamed test scripts and folders (not part of 3DPS, just used to test the setup) 
 
 ### 04/04/2018 (3DPS V1)
 * Removed (and reset) API keys and URLs. Silly me!
