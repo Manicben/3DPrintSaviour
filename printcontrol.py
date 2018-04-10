@@ -28,9 +28,11 @@ DEV_THRES = 0.9
 # This indicates a part of the model has broken off
 if SCORE > SCR_THRES and DEVIANCE > DEV_THRES:
     pause_print()
+    print("Cause: Potential (partial) breakage")
 # This indicates the model has detached from the bed
 elif SCORE > THRES:
     pause_print()
+    print("Cause: Print detached from bed")
 
 
 # Pause the printer
