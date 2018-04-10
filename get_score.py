@@ -10,12 +10,24 @@ import cv2
 fst_file = argv[1]
 if fst_file[-4:] != ".jpg":
     exit()
-num = int(fst_file[-10:-4]) - 1
-if num < 0:
-    print("1 0")
-    print("First image, no previous images", file=stderr)
+
+# Set current image and previous image
+curr = int(fst_file[-10:-4])
+prev = curr - 1
+
+# For the 1st and 2nd images, output 0
+# 1st image is used as background image
+# 2nd image has no previous image (gives errors as prev is BG)
+if curr == 0:
+    print("0.0, 0")
+    print("Background Image", file=stderr)
     exit()
-snd_file = fst_file[:-10] + str(num).rjust(6, '0') + fst_file[-4:]
+if curr == 1:
+    print("0.0, 1")
+    print("First Image, no previous images", file=stderr)
+    exit()
+
+snd_file = fst_file[:-10] + str(prev).rjust(6, '0') + fst_file[-4:]
 
 bg_file = fst_file[:-10] + '000000.jpg'
 
@@ -32,19 +44,30 @@ grayBG = cv2.cvtColor(imageBG, cv2.COLOR_BGR2GRAY)
 # Remove background and threshold to remove shadow effects
 threshold = 100
 
-grayA = cv2.absdiff(grayA, grayBG)
-grayA = cv2.threshold(grayA, threshold, 255, cv2.THRESH_BINARY)[1]
+diffA = cv2.absdiff(grayA, grayBG)
+thresA = cv2.threshold(diffA, threshold, 255, cv2.THRESH_BINARY)[1]
 
-grayB = cv2.absdiff(grayB, grayBG)
-grayB = cv2.threshold(grayB, threshold, 255, cv2.THRESH_BINARY)[1]
+diffB = cv2.absdiff(grayB, grayBG)
+thresB = cv2.threshold(diffB, threshold, 255, cv2.THRESH_BINARY)[1]
+
+# Compare the current image with the image from 5 layers ago
+# This is used to check for filament runout or huge deviance
+deviance = None
+if curr > 5:
+    trd_file = fst_file[:-10] + str(curr-5).rjust(6, '0') + fst_file[-4:]
+    imageC = cv2.imread(trd_file)
+    grayC = cv2.cvtColor(imageC, cv2.COLOR_BGR2GRAY)
+    diffC = cv2.absdiff(grayC, grayBG)
+    thresC = cv2.threshold(diffC, threshold, 255, cv2.THRESH_BINARY)[1]
+    deviance = compare_nrmse(thresA, thresC)
 
 # compute the Normalised Root Mean-Squared Error (NRMSE) between the two
 # images
 
-score = compare_nrmse(grayA, grayB)
+score = compare_nrmse(thresA, thresB)
 
-print("{} {}".format(score,num+1))
-print("Image: {:d}\t Score: {}".format(num+1,score), file=stderr)
+print("{} {} {}".format(curr,score,deviance))
+print("Image: {:d}\t Score: {}\t Deviance: {}".format(curr,score,deviance), file=stderr)
 
 '''
 # This part of the code is for using the SSIM instead of NRMSE.

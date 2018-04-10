@@ -14,7 +14,7 @@ then
 	inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f
 	do
 		RES_DIR=${f%/*}
-		$PRINTCTRL `$GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
+		$GETSCORE "$f" | tee -a "$RES_DIR/output.log"
 	done
 else
 	inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f

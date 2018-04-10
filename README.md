@@ -4,9 +4,20 @@
 3DPrintSaviour (3DPS) is a automatic print failure detection system for 3D printers and runs on Raspberry Pi 3 models. It uses Octoprint and Octolapse to get timelapse images, which 3DPS uses to determine if a failure occurred.
 
 ## How does it work?
-Octolapse generates amazing timelapse images where, from the camera's viewpoint, only the 3D model changes. These images are sent to another Pi (using lsyncd/rsync), where the arrival of a new image (with inotifywait) triggers the Python scripts. By comparing the previous layer image to the current layer image and through the use of OpenCV, a score in the form of a Normalised Root Mean-Squared Error (NRMSE) value is calculated, which represents how similar the two images are, with values over 1 representing a significant deviation. This value stays consistently below 1 after shadow thresholding during a simple 3D print. When the value goes above 1, the system triggers, sending a pause command to Octoprint via the REST API (using Octoclient) and printing out the layer at which it failed in the Pi's terminal.
+Octolapse generates amazing timelapse images where, from the camera's viewpoint, only the 3D model changes. These images are sent to another Pi (using lsyncd/rsync), where the arrival of a new image (with inotifywait) triggers the Python scripts. By comparing the previous layer image to the current layer image and through the use of OpenCV, a score in the form of a Normalised Root Mean-Squared Error (NRMSE) value is calculated, which represents how similar the two images are, with values over 1 representing a significant deviation. This value stays consistently below 1 after shadow thresholding during a simple 3D print.
+This was extended, so that the current image is compared to the image from 5 layers prior. This is named the "deviance" and is calculated in the same way as the score. This value aims to represent how much the print has deviated from past layers. This value is quite high when the current layer has less of a change than the layer from 5 layers prior. An example would be anything with a large base, the base itself is large, anything on top of the base would be smaller in comparison, meaning the deviance would be high. Once 5 layers into the part on top of the base, the deviance will decrease as there is less of a change.
+Using both the score and deviance, it is possible to detect when a 3D print has either detached from the bed or a part has broken off.
+* Detachment - Score > 1.0 (Deviance > 1.0 as well, but not needed)
+* Breakage - Score > 0.7 AND Deviance > 0.9
+The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause.
+Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 10/04/2018 (3DPS V1)
+* Both SCORE and DEVIANCE values are logged with '-test' or '-t' and printcontrol.py is not run in test mode
+* Added new detection based on SCORE and DEVIANCE that detects partial breakages. Needs further testing
+* Added DEVIANCE calculation using current image and image from 5 layers prior
+* Renamed variables to make more sense
 ### 08/04/2018 (3DPS V1)
 * Renamed run.sh to run. Now uses BASH and can provide '-test' or '-t' to copy output from get\_scores.py to a logfile in the same directory as the images. Useful for gathering NRMSE data for complete prints and view how the values change for each layer
 * Forgot to remove old URL and API\_KEY from octoclient\_test.py, has been replaced

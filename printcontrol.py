@@ -10,14 +10,31 @@ if URL is None:
 if API_KEY is None:
     API_KEY = 'YOUR OCTOPRINT API KEY'
 
-# Get SCORE and current layer from get_score.py
-SCORE = float(argv[1])
-LAYER = argv[2]
+# Get SCORE, DEVIANCE and current layer from get_score.py
+if SCORE == 'nan': # Exit if SCORE is NaN, this occus on first layer
+    exit()
+LAYER = argv[1]
+SCORE = float(argv[2])
+DEVIANCE = float(argv[3])
 
-# Set Score error threshold
+# Set SCORE error threshold
 THRES = 1.0
 
-if SCORE > THRES:
+# Set SCORE and DEVIANCE thresholds
+SCR_THRES = 0.7
+DEV_THRES = 0.9
+
+
+# This indicates a part of the model has broken off
+if SCORE > SCR_THRES and DEVIANCE > DEV_THRES:
+    pause_print()
+# This indicates the model has detached from the bed
+elif SCORE > THRES:
+    pause_print()
+
+
+# Pause the printer
+def pause_print():
     try:
         client = OctoClient(url=URL, apikey=API_KEY)
         flags = client.printer()['state']['flags']
