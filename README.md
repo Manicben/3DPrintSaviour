@@ -9,10 +9,13 @@ This was extended, so that the current image is compared to the image from 5 lay
 Using both the score and deviance, it is possible to detect when a 3D print has either detached from the bed or a part has broken off.
 * Detachment - Score > 1.0 (Deviance > 1.0 as well, but not needed)
 * Breakage - Score > 0.7 AND Deviance > 0.9
+
 The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause.
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 11/04/2018 (3DPS V1)
+* Changed run script to use -d (Debug), -l (Logging), -h (Help) flags, as well as the default behaviour when no flags are given. This allows for running whilst logging output, either with (-l) or without (-d) print control, which is useful for data collection after a failure.
 ### 10/04/2018 (3DPS V1)
 * Both SCORE and DEVIANCE values are logged with '-test' or '-t' and printcontrol.py is not run in test mode
 * Added new detection based on SCORE and DEVIANCE that detects partial breakages. Needs further testing
