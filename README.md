@@ -14,6 +14,8 @@ The above threshold values are used to detect when a failure has occurred. If ei
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 12/04/2018 (3DPS V1)
+* Bugfixes related to previous commit
 ### 11/04/2018 (3DPS V1)
 * Changed run script to use -d (Debug), -l (Logging), -h (Help) flags, as well as the default behaviour when no flags are given. This allows for running whilst logging output, either with (-l) or without (-d) print control, which is useful for data collection after a failure.
 ### 10/04/2018 (3DPS V1)
