@@ -3,7 +3,6 @@
 # import the necessary packages
 from skimage.measure import compare_nrmse
 from sys import argv, exit, stderr
-import imutils
 import cv2
 
 # get filenames
