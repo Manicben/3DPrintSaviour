@@ -35,6 +35,8 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
 LAYER = int(argv[1])
 SCORE = float(argv[2])
 DEVIANCE = float(argv[3])
+SCR_DIFF = float(argv[4])
+DEV_DIFF = float(argv[5])
 
 # Detachment thresholds
 SCR_THRES = 1.2
@@ -49,7 +51,7 @@ FIL_SCR_THRES = 0.25
 FIL_DEV_THRES = 0.25
 
 # Do nothing if it is the background or first layer
-if LAYER < 2:
+if LAYER < 6:
     quit()
 # This indicates a part of the model has broken off
 if SCORE > BR_SCR_THRES and DEVIANCE > BR_DEV_THRES:

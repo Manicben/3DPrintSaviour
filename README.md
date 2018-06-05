@@ -15,6 +15,10 @@ The above threshold values are used to detect when a failure has occurred. If ei
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 05/06/2018
+* Breakage detection no longer working
+* Default usage now always produces logfile
+* Started work on using previous values from logfile and getting absolute difference between current score/deviance and previous layer values, this should allow for (better) breakage detection
 ### 04/06/2018 (3DPS V1)
 * All work on 3DPS V2 has been indefinitely halted
 * Support for filament run-out/clogs added
