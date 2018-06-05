@@ -18,11 +18,11 @@ prev = curr - 1
 # 1st image is used as background image
 # 2nd image has no previous image (gives errors as prev is BG)
 if curr == 0:
-    print("0 0.0 0.0")
+    print("0 nan")
     print("Background Image", file=stderr)
     exit()
 if curr == 1:
-    print("1 0.0 0.0")
+    print("1 nan")
     print("First Image, no previous images", file=stderr)
     exit()
 

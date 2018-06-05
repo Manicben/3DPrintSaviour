@@ -26,7 +26,7 @@ while getopts "dlih" arg; do
 	    $PRINTCTRL `$GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
 	  done
 	  ;;
-	i) # Install dependencies
+	i) # Install - Installs dependencies, including OpenCV 3, scikit-image, numpy, scipy and OctoClient.
 	  echo -e "Installing dependencies, please note this will be a long process\nThis will NOT set up a virtualenv for OpenCV, follow this guide instead if you wish to use virtualenvs: https://www.pyimagesearch.com/2017/09/04/raspbian-stretch-install-opencv-3-python-on-your-raspberry-pi/"
 	  sudo apt-get update && sudo apt-get -y upgrade
 	  sudo apt-get install -y build-essential cmake pkg-config

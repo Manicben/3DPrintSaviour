@@ -28,7 +28,7 @@ if API_KEY is None:
     API_KEY = 'YOUR OCTOPRINT API KEY'
 
 
-if argv[2] == 'nan': # Exit if SCORE is NaN, this occus on first layer
+if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and first layer
     exit()
 
 # Get SCORE, DEVIANCE and current layer from get_score.py
