@@ -43,8 +43,8 @@ SCR_THRES = 1.2
 DEV_THRES = 1.5
 
 # Partial Breakage thresholds for DIFF values
-BR_SCR_THRES = 0.2
-BR_DEV_THRES = 0.2
+BR_SCR_THRES = 0.1
+BR_DEV_THRES = 0.1
 
 # Filament run out/clog thresholds
 FIL_SCR_THRES = 0.25

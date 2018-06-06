@@ -68,11 +68,11 @@ if curr > 5:
     deviance = compare_nrmse(thresA, thresC)
 
     # Calculate difference compared with previous layer score and deviance
-    logfile = dirname(fst_file) + 'output.log'
+    logfile = dirname(fst_file) + '/output.log'
     with open(logfile) as log:
         data = log.readlines()
     prev_layer = data[-1]
-    layer,scr,dev = prev_layer.split(" ")
+    layer,scr,dev,s_diff,d_diff = prev_layer.split(" ")
     scr_diff = abs(score-float(scr))
     dev_diff = abs(deviance-float(dev))
 
