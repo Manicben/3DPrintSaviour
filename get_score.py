@@ -76,5 +76,5 @@ if curr > 5:
     scr_diff = abs(score-float(scr))
     dev_diff = abs(deviance-float(dev))
 
-print("{} {} {}".format(curr,score,deviance))
-print("Image: {:d}\t Score: {}\t Deviance: {}".format(curr,score,deviance), file=stderr)
+print("{} {} {} {} {}".format(curr,score,deviance,scr_diff,dev_diff))
+print("Image: {:d}\t Score: {}\t Deviance: {}\tDiffs: {}/{}".format(curr,score,deviance,scr_diff,dev_diff), file=stderr)

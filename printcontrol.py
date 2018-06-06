@@ -42,9 +42,9 @@ DEV_DIFF = float(argv[5])
 SCR_THRES = 1.2
 DEV_THRES = 1.5
 
-# Partial Breakage thresholds
-BR_SCR_THRES = 1.0
-BR_DEV_THRES = 1.4
+# Partial Breakage thresholds for DIFF values
+BR_SCR_THRES = 0.2
+BR_DEV_THRES = 0.2
 
 # Filament run out/clog thresholds
 FIL_SCR_THRES = 0.25
@@ -54,7 +54,7 @@ FIL_DEV_THRES = 0.25
 if LAYER < 6:
     quit()
 # This indicates a part of the model has broken off
-if SCORE > BR_SCR_THRES and DEVIANCE > BR_DEV_THRES:
+if SCR_DIFF > BR_SCR_THRES and DEV_DIFF > BR_DEV_THRES:
     print("Cause: Potential (partial) breakage")
     pause_print()
 # This indicates the model has detached from the bed
