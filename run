@@ -8,11 +8,13 @@ GETSCORE="/home/pi/FYP/get_score.py" #path to get_score.py
 
 usage() { echo -e "$0 usage:\n\tNo flag provided - Runs default with logging, but no debugging." && grep "[[:space:]].)\ #" $0 | sed 's/#//' | sed -r 's/([a-z])\)/-\1/'; exit 0; }
 
+echo "3D Print Saviour running..."
+
 while getopts "dih" arg; do
   case $arg in
 	d) # Debug Mode - Logs output to logfile, does not run print control.
 	  echo -e "DEBUG MODE. Logging Score output to logfile in image directory\nPrint Control disabled"
-	  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f
+	  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f
 	  do
 	    RES_DIR=${f%/*}
 	    $GETSCORE "$f" | tee -a "$RES_DIR/output.log"
@@ -95,7 +97,7 @@ while getopts "dih" arg; do
   esac
 done
 if (( $OPTIND == 1 )); then
-  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" | while read f
+  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f
   do
     RES_DIR=${f%/*}
     $PRINTCTRL `$GETSCORE "$f" | tee -a "$RES_DIR/output.log"`

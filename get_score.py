@@ -56,7 +56,7 @@ score = compare_nrmse(thresA, thresB)
 
 # Compare the current image with the image from 5 layers ago
 # This is used to check for filament runout or huge deviance
-deviance = 0.0
+deviance = 1.0
 scr_diff = 0.0
 dev_diff = 0.0
 if curr > 5:

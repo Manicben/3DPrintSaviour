@@ -32,34 +32,37 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
     exit()
 
 # Get SCORE, DEVIANCE and current layer from get_score.py
+
 LAYER = int(argv[1])
+# Do nothing if it is the background or first layer
+if LAYER < 6:
+    quit()
+
 SCORE = float(argv[2])
 DEVIANCE = float(argv[3])
 SCR_DIFF = float(argv[4])
 DEV_DIFF = float(argv[5])
 
 # Detachment thresholds
-SCR_THRES = 1.2
-DEV_THRES = 1.5
+SCR_THRES = 1.0
+DEV_THRES = 1.0
 
 # Partial Breakage thresholds for DIFF values
-BR_SCR_THRES = 0.1
-BR_DEV_THRES = 0.1
+BR_SCR_THRES = 0.15
+BR_DEV_THRES = 0.15
 
 # Filament run out/clog thresholds
 FIL_SCR_THRES = 0.25
 FIL_DEV_THRES = 0.25
 
-# Do nothing if it is the background or first layer
-if LAYER < 6:
-    quit()
-# This indicates a part of the model has broken off
-if SCR_DIFF > BR_SCR_THRES and DEV_DIFF > BR_DEV_THRES:
-    print("Cause: Potential (partial) breakage")
-    pause_print()
+
 # This indicates the model has detached from the bed
-elif SCORE > SCR_THRES and DEVIANCE > DEV_THRES:
+if SCORE > SCR_THRES and DEVIANCE > DEV_THRES:
     print("Cause: Print detached from bed")
+    pause_print()
+# This indicates a part of the model has broken off
+elif SCR_DIFF > BR_SCR_THRES and DEV_DIFF > BR_DEV_THRES:
+    print("Cause: Potential (partial) breakage")
     pause_print()
 elif SCORE < FIL_SCR_THRES and DEVIANCE < FIL_DEV_THRES:
     print("Cause: Filament ran out or nozzle/extruder clog")

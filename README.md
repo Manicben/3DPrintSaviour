@@ -7,14 +7,17 @@
 Octolapse generates amazing timelapse images where, from the camera's viewpoint, only the 3D model changes. These images are sent to another Pi (using lsyncd/rsync), where the arrival of a new image (with inotifywait) triggers the Python scripts. By comparing the previous layer image to the current layer image and through the use of OpenCV, a score in the form of a Normalised Root Mean-Squared Error (NRMSE) value is calculated, which represents how similar the two images are, with values over 1 representing a significant deviation. This value stays consistently below 1 after shadow thresholding during a simple 3D print.
 This was extended, so that the current image is compared to the image from 5 layers prior. This is named the "deviance" and is calculated in the same way as the score. This value aims to represent how much the print has deviated from past layers. This value is quite high when the current layer has less of a change than the layer from 5 layers prior. An example would be anything with a large base, the base itself is large, anything on top of the base would be smaller in comparison, meaning the deviance would be high. Once 5 layers into the part on top of the base, the deviance will decrease as there is less of a change.
 Using both the score and deviance, it is possible to detect when a 3D print has either detached from the bed or a part has broken off, even when the filament has either ran out or clogged.
-* Detachment - Score > 1.2 AND Deviance > 1.5
-* Breakage - Score Diff > 0.1 AND Deviance Diff > 0.1
+* Detachment - Score > 1.0 AND Deviance > 1.0
+* Breakage - Score Diff > 0.15 AND Deviance Diff > 0.15
 * Filament run-out/clog - Score < 0.25 AND Deviance < 0.25
 
 The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause.
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 07/06/2018
+* Stoppped inotify output (not helpful), added echo to stdout when program starts
+* Final adjustments made, testing now in progress
 ### 06/06/2018
 * Breakage detection now works
 * Breakage detection uses absolute differences compared to previous layer score/deviance
