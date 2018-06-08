@@ -15,6 +15,8 @@ The above threshold values are used to detect when a failure has occurred. If ei
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 08/06/2018
+* Printcontrol slightly changed to only start checking values after layer 6 (had rare occurence when dev\_diff was very high and scr\_diff fluctuated and system triggered)
 ### 07/06/2018
 * Stoppped inotify output (not helpful), added echo to stdout when program starts
 * Final adjustments made, testing now in progress

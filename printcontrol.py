@@ -35,7 +35,7 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
 
 LAYER = int(argv[1])
 # Do nothing if it is the background or first layer
-if LAYER < 6:
+if LAYER <= 6:
     quit()
 
 SCORE = float(argv[2])
