@@ -9,12 +9,14 @@ This was extended, so that the current image is compared to the image from 5 lay
 Using both the score and deviance, it is possible to detect when a 3D print has either detached from the bed or a part has broken off, even when the filament has either ran out or clogged.
 * Detachment - Score > 1.0 AND Deviance > 1.0
 * Breakage - Score Diff > 0.15 AND Deviance Diff > 0.15
-* Filament run-out/clog - Score < 0.25 AND Deviance < 0.25
+* Filament run-out/clog - Score < 0.25 AND Deviance < 0.30
 
 The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause.
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 09/06/2018
+* Printcontrol slightly changed. Raised Deviance filament threshold from 0.25 to 0.30. Affected tests have been redone.
 ### 08/06/2018
 * Printcontrol slightly changed to only start checking values after layer 6 (had rare occurence when dev\_diff was very high and scr\_diff fluctuated and system triggered)
 ### 07/06/2018

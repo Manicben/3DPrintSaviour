@@ -53,7 +53,7 @@ BR_DEV_THRES = 0.15
 
 # Filament run out/clog thresholds
 FIL_SCR_THRES = 0.25
-FIL_DEV_THRES = 0.25
+FIL_DEV_THRES = 0.30
 
 
 # This indicates the model has detached from the bed
