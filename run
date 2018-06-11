@@ -17,7 +17,7 @@ while getopts "dih" arg; do
 	  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f
 	  do
 	    RES_DIR=${f%/*}
-	    $GETSCORE "$f" | tee -a "$RES_DIR/output.log"
+	    $GETSCORE "$f" >> "$RES_DIR/output.log"
 	  done
 	  ;;
 	i) # Install - Installs dependencies, including OpenCV 3, scikit-image, numpy, scipy and OctoClient.

@@ -8,13 +8,15 @@ Octolapse generates amazing timelapse images where, from the camera's viewpoint,
 This was extended, so that the current image is compared to the image from 5 layers prior. This is named the "deviance" and is calculated in the same way as the score. This value aims to represent how much the print has deviated from past layers. This value is quite high when the current layer has less of a change than the layer from 5 layers prior. An example would be anything with a large base, the base itself is large, anything on top of the base would be smaller in comparison, meaning the deviance would be high. Once 5 layers into the part on top of the base, the deviance will decrease as there is less of a change.
 Using both the score and deviance, it is possible to detect when a 3D print has either detached from the bed or a part has broken off, even when the filament has either ran out or clogged.
 * Detachment - Score > 1.0 AND Deviance > 1.0
-* Breakage - Score Diff > 0.15 AND Deviance Diff > 0.15
-* Filament run-out/clog - Score < 0.25 AND Deviance < 0.30
+* Breakage - Score Diff > 0.15 AND Deviance Diff > 0.10
+* Filament run-out/clog - Score < 0.25 AND Deviance < 0.28
 
-The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause.
+The above threshold values are used to detect when a failure has occurred. If either of the above conditions are true, printcontrol.py sends a pause signal to the printer via the Octoprint REST API and notes down the layer at which the pause was issued and what potentially caused the pause. Please note that 3DPS will not be able to detect a failure within the first 7 layers, but if one has, the system should detect something went wrong later (i.e. the model is missing). 
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 11/06/2018
+* Printcontrol slightly tweaked. Start checking after layer 7. Breakage dev\_diff lowered to 0.10, Filament run-out deviance lowered to 0.28. All affected tests have been redone.
 ### 09/06/2018
 * Printcontrol slightly changed. Raised Deviance filament threshold from 0.25 to 0.30. Affected tests have been redone.
 ### 08/06/2018

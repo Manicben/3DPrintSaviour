@@ -35,7 +35,7 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
 
 LAYER = int(argv[1])
 # Do nothing if it is the background or first layer
-if LAYER <= 6:
+if LAYER <= 7:
     quit()
 
 SCORE = float(argv[2])
@@ -49,11 +49,11 @@ DEV_THRES = 1.0
 
 # Partial Breakage thresholds for DIFF values
 BR_SCR_THRES = 0.15
-BR_DEV_THRES = 0.15
+BR_DEV_THRES = 0.10
 
 # Filament run out/clog thresholds
 FIL_SCR_THRES = 0.25
-FIL_DEV_THRES = 0.30
+FIL_DEV_THRES = 0.28
 
 
 # This indicates the model has detached from the bed
