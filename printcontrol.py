@@ -52,7 +52,7 @@ BR_SCR_THRES = 0.15
 BR_DEV_THRES = 0.10
 
 # Filament run out/clog thresholds
-FIL_SCR_THRES = 0.25
+FIL_SCR_THRES = 0.23
 FIL_DEV_THRES = 0.28
 
 

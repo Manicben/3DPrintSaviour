@@ -15,6 +15,8 @@ The above threshold values are used to detect when a failure has occurred. If ei
 Please note that the threshold values are subject to change upon further experimentation. They have been chosen purely based on experiment observations.
 
 ## Changelog
+### 12/06/2018
+* Printcontrol tweaked, lowered filament run-out score to 0.23. All affected tests have been redone.
 ### 11/06/2018
 * Printcontrol slightly tweaked. Start checking after layer 7. Breakage dev\_diff lowered to 0.10, Filament run-out deviance lowered to 0.28. All affected tests have been redone.
 ### 09/06/2018
