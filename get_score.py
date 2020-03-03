@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # import the necessary packages
-from skimage.measure import compare_nrmse
+from skimage.metrics import normalized_root_mse
 from sys import argv, exit, stderr
 from os.path import dirname
 import cv2
@@ -52,7 +52,7 @@ thresB = cv2.threshold(diffB, threshold, 255, cv2.THRESH_BINARY)[1]
 
 # compute the Normalised Root Mean-Squared Error (NRMSE) between the two
 # images
-score = compare_nrmse(thresA, thresB)
+score = normalized_root_mse(thresA, thresB)
 
 # Compare the current image with the image from 5 layers ago
 # This is used to check for filament runout or huge deviance
@@ -65,7 +65,7 @@ if curr > 5:
     grayC = cv2.imread(trd_file,0)
     diffC = cv2.absdiff(grayC, grayBG)
     thresC = cv2.threshold(diffC, threshold, 255, cv2.THRESH_BINARY)[1]
-    deviance = compare_nrmse(thresA, thresC)
+    deviance = normalized_root_mse(thresA, thresC)
 
     # Calculate difference compared with previous layer score and deviance
     logfile = dirname(fst_file) + '/output.log'
