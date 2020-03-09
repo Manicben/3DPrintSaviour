@@ -21,13 +21,6 @@ def pause_print():
         print(e)
 
 
-# Specify URL and API key for Octoprint
-if URL is None:
-    URL = 'YOUR OCTOPRINT IP ADDRESS'
-if API_KEY is None:
-    API_KEY = 'YOUR OCTOPRINT API KEY'
-
-
 if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and first layer
     exit()
 
@@ -48,12 +41,12 @@ SCR_THRES = 1.0
 DEV_THRES = 1.0
 
 # Partial Breakage thresholds for DIFF values
-BR_SCR_THRES = 0.15
-BR_DEV_THRES = 0.10
+BR_SCR_THRES = 0.2
+BR_DEV_THRES = 0.2
 
 # Filament run out/clog thresholds
-FIL_SCR_THRES = 0.23
-FIL_DEV_THRES = 0.28
+FIL_SCR_THRES = 0.2
+FIL_DEV_THRES = 0.2
 
 
 # This indicates the model has detached from the bed

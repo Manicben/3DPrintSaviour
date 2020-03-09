@@ -105,3 +105,5 @@ if (( $OPTIND == 1 )); then
     python3 $PRINTCTRL `python3 $GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
   done
 fi
+
+#ctrl+z, bg, disown
