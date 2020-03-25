@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-with open('output/10/output.log') as f:
+with open('output/11/output.log') as f:
     content = f.readlines()
 
 i, score, deviance, diff_socre, diff_deviance = [], [], [], [], []

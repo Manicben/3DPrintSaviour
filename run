@@ -98,8 +98,7 @@ while getopts "dih" arg; do
   esac
 done
 if (( $OPTIND == 1 )); then
-  inotifywait -m -r -e create --format '%w%f' "$DIR" 2> /dev/null | while read f
-  echo "check!"
+  inotifywait -m -r -e created --format '%w%f' "$DIR" 2> /dev/null | while read f #change 'created' to 'moved_to' for testing
   do
     RES_DIR=${f%/*}
     python3 $PRINTCTRL `python3 $GETSCORE "$f" | tee -a "$RES_DIR/output.log"`

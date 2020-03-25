@@ -3,6 +3,8 @@
 from sys import argv
 from octoclient import OctoClient
 from api_keys import URL, API_KEY
+import os
+from os.path import dirname
 
 # Pause the printer
 def pause_print():
@@ -20,7 +22,9 @@ def pause_print():
     except Exception as e:
         print(e)
 
-
+print(argv)
+if len(argv) < 2:
+    exit()
 if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and first layer
     exit()
 
@@ -35,6 +39,7 @@ SCORE = float(argv[2])
 DEVIANCE = float(argv[3])
 SCR_DIFF = float(argv[4])
 DEV_DIFF = float(argv[5])
+img_file = str(argv[6])
 
 # Detachment thresholds
 SCR_THRES = 1.0
@@ -60,3 +65,18 @@ elif SCR_DIFF > BR_SCR_THRES and DEV_DIFF > BR_DEV_THRES:
 elif SCORE < FIL_SCR_THRES and DEVIANCE < FIL_DEV_THRES:
     print("Cause: Filament ran out or nozzle/extruder clog")
     pause_print()
+
+else:
+    import cv2
+    from ml_api.lib.detection_model import load_net, detect
+
+    net_main, meta_main = load_net("./ml_api/model/model.cfg", "./ml_api/model/model.weights", "./ml_api/model/model.meta")
+    img = cv2.imread(img_file)
+    detection = detect(net_main, meta_main, img, thresh=0.3)
+    print(len(detection))
+    if len(detection) > 0:
+        print("Cause: Spaghetti")
+        pause_print()
+
+logfile = dirname(img_file) + '/output.log'
+os.system("sed -i '/g$/d' {}".format(logfile))
