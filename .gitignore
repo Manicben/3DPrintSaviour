@@ -1,5 +1,4 @@
 octoclient/
 test_images/
-api_keys.py
 __pycache__/
 *.pyc
