@@ -35,9 +35,11 @@ In terminal, navigate to the root directory of this repo, run the `run` script w
 ```
 $ ./run -i
 ```
-This may take quite some time as a lot of packages are being installed including openCV. If you already have OpenCV installed (with version >= 3.4.6), you can manually comment out lines inside the `run` script related to openCV installation. If not, pay attension when the script is compiling OpenCV. If it failed, you have to install it manually.
+This may take quite some time as a number of packages are being installed.
 
 You can press ctrl-c to exit once you see "Setup complete!" in your terminal.
+
+To make sure 3DPrintSaviour works, you also need to make sure that you have **OpenCV** installed with version **>= 3.4.6**. The commands in `run` to install OpenCV are commented out by default as they might not work. Do check if you have the right version installed. I will not include the steps to install OpenCV here.
 
 ### Setting up Octoprint and Octolapse on the RPi
 While waiting for the installation to finish, you can start to work on the RPi. Follow the tutorial below to setup Octoprint on your RPi: https://octoprint.org/download/ both model 3 and 4 should be fine.
@@ -78,4 +80,3 @@ Then just start the printing through octoprint. When the snapshots are taken, th
 * Updated the OpenCV installation version to 3.4.6, bug fixing.
 
 Check [`old_README.md`](./old_README.md) for the past changelogs, Plan and Roadmap, and Acknoledgements and References
-
