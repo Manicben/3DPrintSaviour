@@ -25,7 +25,11 @@ def pause_print():
 print(argv)
 if len(argv) < 2:
     exit()
+
 if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and first layer
+    img_file = str(argv[3])
+    logfile = dirname(img_file) + '/output.log'
+    os.system("sed -i '/g$/d' {}".format(logfile))
     exit()
 
 # Get SCORE, DEVIANCE and current layer from get_score.py
@@ -33,6 +37,9 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
 LAYER = int(argv[1])
 # Do nothing if it is the background or first layer
 if LAYER <= 7:
+    img_file = str(argv[6])
+    logfile = dirname(img_file) + '/output.log'
+    os.system("sed -i '/g$/d' {}".format(logfile))
     quit()
 
 SCORE = float(argv[2])

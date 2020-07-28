@@ -2,7 +2,7 @@
 # This script runs both Python scripts when a new file is created via lsyncd
 # Note that 'moved_to' is used due to the way rsync works
 
-DIR="$HOME/3DPrintSaviour/test_images" #path to your image folder
+DIR="$HOME/3DPrintSaviour/output" #path to your image folder
 PRINTCTRL="$HOME/3DPrintSaviour/printcontrol.py" #path to printcontrol.py
 GETSCORE="$HOME/3DPrintSaviour/get_score.py" #path to get_score.py
 
@@ -98,7 +98,7 @@ while getopts "dih" arg; do
   esac
 done
 if (( $OPTIND == 1 )); then
-  inotifywait -m -r -e created --format '%w%f' "$DIR" 2> /dev/null | while read f #change 'created' to 'moved_to' for testing
+  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f #change 'created' to 'moved_to' for testing
   do
     RES_DIR=${f%/*}
     python3 $PRINTCTRL `python3 $GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
