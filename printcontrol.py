@@ -3,6 +3,8 @@
 from sys import argv
 from octoclient import OctoClient
 from api_keys import URL, API_KEY
+import os
+from os.path import dirname
 
 # Pause the printer
 def pause_print():
@@ -20,15 +22,14 @@ def pause_print():
     except Exception as e:
         print(e)
 
-
-# Specify URL and API key for Octoprint
-if URL is None:
-    URL = 'YOUR OCTOPRINT IP ADDRESS'
-if API_KEY is None:
-    API_KEY = 'YOUR OCTOPRINT API KEY'
-
+print(argv)
+if len(argv) < 2:
+    exit()
 
 if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and first layer
+    img_file = str(argv[3])
+    logfile = dirname(img_file) + '/output.log'
+    os.system("sed -i '/g$/d' {}".format(logfile))
     exit()
 
 # Get SCORE, DEVIANCE and current layer from get_score.py
@@ -36,24 +37,28 @@ if argv[2] == 'nan': # Exit if SCORE is NaN, this occurs on the background and f
 LAYER = int(argv[1])
 # Do nothing if it is the background or first layer
 if LAYER <= 7:
+    img_file = str(argv[6])
+    logfile = dirname(img_file) + '/output.log'
+    os.system("sed -i '/g$/d' {}".format(logfile))
     quit()
 
 SCORE = float(argv[2])
 DEVIANCE = float(argv[3])
 SCR_DIFF = float(argv[4])
 DEV_DIFF = float(argv[5])
+img_file = str(argv[6])
 
 # Detachment thresholds
 SCR_THRES = 1.0
 DEV_THRES = 1.0
 
 # Partial Breakage thresholds for DIFF values
-BR_SCR_THRES = 0.15
-BR_DEV_THRES = 0.10
+BR_SCR_THRES = 0.2
+BR_DEV_THRES = 0.2
 
 # Filament run out/clog thresholds
-FIL_SCR_THRES = 0.23
-FIL_DEV_THRES = 0.28
+FIL_SCR_THRES = 0.2
+FIL_DEV_THRES = 0.2
 
 
 # This indicates the model has detached from the bed
@@ -67,3 +72,18 @@ elif SCR_DIFF > BR_SCR_THRES and DEV_DIFF > BR_DEV_THRES:
 elif SCORE < FIL_SCR_THRES and DEVIANCE < FIL_DEV_THRES:
     print("Cause: Filament ran out or nozzle/extruder clog")
     pause_print()
+
+else:
+    import cv2
+    from ml_api.lib.detection_model import load_net, detect
+
+    net_main, meta_main = load_net("./ml_api/model/model.cfg", "./ml_api/model/model.weights", "./ml_api/model/model.meta")
+    img = cv2.imread(img_file)
+    detection = detect(net_main, meta_main, img, thresh=0.3)
+    print(len(detection))
+    if len(detection) > 0:
+        print("Cause: Spaghetti")
+        pause_print()
+
+logfile = dirname(img_file) + '/output.log'
+os.system("sed -i '/g$/d' {}".format(logfile))
