@@ -2,9 +2,9 @@
 # This script runs both Python scripts when a new file is created via lsyncd
 # Note that 'moved_to' is used due to the way rsync works
 
-DIR="/home/pi/FYP/test_images" #path to your image folder
-PRINTCTRL="/home/pi/FYP/printcontrol.py" #path to printcontrol.py
-GETSCORE="/home/pi/FYP/get_score.py" #path to get_score.py
+DIR="$HOME/3DPrintSaviour/output" #path to your image folder
+PRINTCTRL="$HOME/3DPrintSaviour/printcontrol.py" #path to printcontrol.py
+GETSCORE="$HOME/3DPrintSaviour/get_score.py" #path to get_score.py
 
 usage() { echo -e "$0 usage:\n\tNo flag provided - Runs default with logging, but no debugging." && grep "[[:space:]].)\ #" $0 | sed 's/#//' | sed -r 's/([a-z])\)/-\1/'; exit 0; }
 
@@ -30,13 +30,20 @@ while getopts "dih" arg; do
 	  sudo apt-get install -y libgtk2.0-dev libgtk-3-dev
 	  sudo apt-get install -y libatlas-base-dev gfortran
 	  sudo apt-get install -y python2.7-dev python3-dev
+	  sudo apt-get install -y inotify-tools
 
-	  # Download and unzip opencv 3.4.0 and opencv_contrib
-	  cd ~
-	  wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.0.zip
-	  unzip opencv.zip
-	  wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.4.0.zip
-	  unzip opencv_contrib.zip
+	  mkdir ./snapshots
+
+	  echo "Now downloading weights for detection model"
+	  wget --quiet -O ml_api/model/model.weights $(cat ml_api/model/model.weights.url | tr -d '\r')
+
+	  # Download and unzip opencv 3.4.6 and opencv_contrib
+	  #echo "Installing OpenCV 3.4.6"
+	  #cd ~
+	  #wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.6.zip
+	  #unzip opencv.zip
+	  #wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.4.6.zip
+	  #unzip opencv_contrib.zip
 
 	  # Install pip
 	  wget https://bootstrap.pypa.io/get-pip.py
@@ -45,41 +52,41 @@ while getopts "dih" arg; do
 
 	  pip3 install numpy
 
-	  cd ~/opencv-3.4.0/
-	  mkdir build
-	  cd build
-	  cmake -D CMAKE_BUILD_TYPE=RELEASE \
-	      -D CMAKE_INSTALL_PREFIX=/usr/local \
-	      -D INSTALL_PYTHON_EXAMPLES=ON \
-	      -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.4.0/modules \
-	      -D BUILD_EXAMPLES=ON ..
+	  #cd ~/opencv-3.4.6/
+	  #mkdir build
+	  #cd build
+	  #cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	  #    -D CMAKE_INSTALL_PREFIX=/usr/local \
+	  #    -D INSTALL_PYTHON_EXAMPLES=ON \
+	  #    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.4.6/modules \
+	  #    -D BUILD_EXAMPLES=ON ..
 
 	  # Increase swapsize to allow quad-core compilation
-	  sudo sed -i -e 's/CONF_SWPASIZE\=100/CONF_SWAPSIZE\=1024/g' /etc/dphys-swapfile
-	  sudo /etc/init.d/dphys-swapfile stop
-	  sudo /etc/init.d/dphys-swapfile start
+	  #sudo sed -i -e 's/CONF_SWPASIZE\=100/CONF_SWAPSIZE\=1024/g' /etc/dphys-swapfile
+	  #sudo /etc/init.d/dphys-swapfile stop
+	  #sudo /etc/init.d/dphys-swapfile start
 	  
 	  # Compile OpenCV
-	  make -j4
+	  #make -j4
 	  
 	  # Install OpenCV
-	  sudo make install
-	  sudo ldconfig
+	  #sudo make install
+	  #sudo ldconfig
 
 	  # Increase swapsize to allow quad-core compilation
-	  sudo sed -i -e 's/CONF_SWPASIZE\=1024/CONF_SWAPSIZE\=100/g' /etc/dphys-swapfile
-	  sudo /etc/init.d/dphys-swapfile stop
-	  sudo /etc/init.d/dphys-swapfile start
+	  #sudo sed -i -e 's/CONF_SWPASIZE\=1024/CONF_SWAPSIZE\=100/g' /etc/dphys-swapfile
+	  #sudo /etc/init.d/dphys-swapfile stop
+	  #sudo /etc/init.d/dphys-swapfile start
 
-	  cd /usr/local/lib/python3.5/site-packages/
-	  sudo mv cv2.cpython-35m-arm-linux-gnueabihf.so cv2.so
-	  cd ~/.virtualenvs/cv/lib/python3.5/site-packages/
-	  ln -s /usr/local/lib/python3.5/site-packages/cv2.so cv2.so
+	  #cd /usr/local/lib/python3.6/site-packages/
+	  #sudo mv cv2.cpython-36m-arm-linux-gnueabihf.so cv2.so
+	  #cd ~/.virtualenvs/cv/lib/python3.6/site-packages/
+	  #ln -s /usr/local/lib/python3.6/site-packages/cv2.so cv2.so
 
-	  if [ $( python3 -c "exec(\"import cv2\nprint(cv2.__version__)\")" ) == "3.4.0" ];
-	  then echo "OpenCV 3.4.0 installed succesfully!";
-	  else echo "OpenCV 3.4.0 did not install correctly, check the output above.";
-	  fi
+	  #if [ $( python3 -c "exec(\"import cv2\nprint(cv2.__version__)\")" ) == "3.4.6" ];
+	  #then echo "OpenCV 3.4.6 installed succesfully!";
+	  #else echo "OpenCV 3.4.6 did not install correctly, check the output above.";
+	  #fi
 
 	  echo "Now installing additional dependencies..."
 	  pip3 install scipy
@@ -97,9 +104,11 @@ while getopts "dih" arg; do
   esac
 done
 if (( $OPTIND == 1 )); then
-  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f
+  inotifywait -m -r -e moved_to --format '%w%f' "$DIR" 2> /dev/null | while read f #change 'created' to 'moved_to' for testing
   do
     RES_DIR=${f%/*}
-    $PRINTCTRL `$GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
+    python3 $PRINTCTRL `python3 $GETSCORE "$f" | tee -a "$RES_DIR/output.log"`
   done
 fi
+
+#ctrl+z, bg, disown

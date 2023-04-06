@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
 # import the necessary packages
-from skimage.measure import compare_nrmse
+from skimage.metrics import normalized_root_mse
 from sys import argv, exit, stderr
 from os.path import dirname
+import os
 import cv2
 
 # get filenames
 fst_file = argv[1]
+#fst_file = 'output/11/spaghetti_test_0.15mm_PLA_MK3S_40m000150.jpg'
 if fst_file[-4:] != ".jpg":
     exit()
 
@@ -41,6 +43,11 @@ grayA = cv2.imread(fst_file,0)
 grayB = cv2.imread(snd_file,0)
 grayBG = cv2.imread(bg_file,0)
 
+# crop the images
+grayA = grayA[:, 120:520]
+grayB = grayB[:, 120:520]
+grayBG = grayBG[:, 120:520]
+
 # Remove background and threshold to remove shadow effects
 threshold = 20
 
@@ -52,7 +59,7 @@ thresB = cv2.threshold(diffB, threshold, 255, cv2.THRESH_BINARY)[1]
 
 # compute the Normalised Root Mean-Squared Error (NRMSE) between the two
 # images
-score = compare_nrmse(thresA, thresB)
+score = normalized_root_mse(thresA, thresB)
 
 # Compare the current image with the image from 5 layers ago
 # This is used to check for filament runout or huge deviance
@@ -63,9 +70,10 @@ if curr > 5:
     trd_file = fst_file[:-10] + str(curr-5).rjust(6, '0') + fst_file[-4:]
     #imageC = cv2.imread(trd_file)
     grayC = cv2.imread(trd_file,0)
+    grayC = grayC[:, 120:520]
     diffC = cv2.absdiff(grayC, grayBG)
     thresC = cv2.threshold(diffC, threshold, 255, cv2.THRESH_BINARY)[1]
-    deviance = compare_nrmse(thresA, thresC)
+    deviance = normalized_root_mse(thresA, thresC)
 
     # Calculate difference compared with previous layer score and deviance
     logfile = dirname(fst_file) + '/output.log'
@@ -77,4 +85,5 @@ if curr > 5:
     dev_diff = abs(deviance-float(dev))
 
 print("{} {} {} {} {}".format(curr,score,deviance,scr_diff,dev_diff))
+print(fst_file)
 print("Image: {:d}\t Score: {}\t Deviance: {}\tDiffs: {}/{}".format(curr,score,deviance,scr_diff,dev_diff), file=stderr)
